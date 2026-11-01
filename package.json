@@ -1,0 +1,47 @@
+{
+  "name": "@digitalmeadow/motion",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Minimal motion primitives: interpolation, easings, springs and particle physics",
+  "author": "Digital Meadow <inbox@digitalmeadow.studio> (https://digitalmeadow.studio)",
+  "keywords": [
+    "motion",
+    "animation",
+    "easing",
+    "spring",
+    "physics",
+    "tween"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalmeadow/motion.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "typescript": "7.0.2",
+    "vite": "8.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
