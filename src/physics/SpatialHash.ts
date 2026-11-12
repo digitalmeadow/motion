@@ -9,6 +9,7 @@ export class SpatialHash {
   private next: Int32Array;
   private cells: Int32Array;
   private count = 0;
+  private skip: ReadonlySet<number> = new Set();
 
   /**
    * @param cellSize the furthest apart a pair can be and still be found.
@@ -27,8 +28,10 @@ export class SpatialHash {
   build(particles: Particles) {
     const p = particles.positions;
     this.count = particles.count;
+    this.skip = particles.disabled;
     this.head.fill(-1);
     for (let i = 0; i < this.count; i++) {
+      if (this.skip.has(i)) continue;
       for (let axis = 0; axis < 3; axis++) {
         this.cells[i * 3 + axis] = Math.floor(p[i * 3 + axis] / this.cellSize);
       }
@@ -42,6 +45,7 @@ export class SpatialHash {
   forEachPair(visit: (a: number, b: number) => void) {
     const c = this.cells;
     for (let a = 0; a < this.count; a++) {
+      if (this.skip.has(a)) continue;
       for (let dx = -1; dx <= 1; dx++) {
         for (let dy = -1; dy <= 1; dy++) {
           for (let dz = -1; dz <= 1; dz++) {

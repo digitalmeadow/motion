@@ -21,6 +21,11 @@ export class Particles {
   readonly masses: Float32Array;
   /** Held in place: forces still act on what they're connected to, never on them. */
   readonly pinned = new Set<number>();
+  /**
+   * Taken out, but kept, index and all: no motion, and SpatialHash and ParticleGroups pass them
+   * by. Forces you apply yourself should skip them too.
+   */
+  readonly disabled = new Set<number>();
   count = 0;
   drag: number;
   friction: number;
@@ -64,7 +69,7 @@ export class Particles {
     const slow = this.friction * delta;
     for (let i = 0; i < this.count; i++) {
       const o = i * 3;
-      if (this.pinned.has(i)) {
+      if (this.pinned.has(i) || this.disabled.has(i)) {
         v.fill(0, o, o + 3);
         f.fill(0, o, o + 3);
         continue;
@@ -96,6 +101,7 @@ export class Particles {
     const v = this.velocities;
     let peak = 0;
     for (let i = 0; i < this.count; i++) {
+      if (this.disabled.has(i)) continue;
       peak = Math.max(peak, Math.hypot(v[i * 3], v[i * 3 + 1], v[i * 3 + 2]));
     }
     return peak;

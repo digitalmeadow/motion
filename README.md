@@ -89,7 +89,7 @@ function frame(delta: number) {
 }
 ```
 
-- `Particles`: point masses with `drag` (viscous), `friction` (dry: brings things to a stop), `maxSpeed` and `pinned`. Semi-implicit Euler.
+- `Particles`: point masses with `drag` (viscous), `friction` (dry: brings things to a stop), `maxSpeed`, `pinned` and `disabled` (taken out, index kept). Semi-implicit Euler.
 - Forces: `spring` (damped Hooke), `attract` (to a point), `repel` (inverse-square, fading to zero at a radius), `drag` (relative to a reference velocity).
 - `SpatialHash`: neighbour pairs in linear time, for short-range forces.
 - `BarnesHut`: long-range repulsion between all pairs in O(n log n), by octree. `build`, then `repel`; no garbage per frame.

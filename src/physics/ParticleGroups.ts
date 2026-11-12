@@ -12,7 +12,7 @@ export class ParticleGroups {
   readonly bodies: Particles;
   /** Each particle's group: any index below capacity. Particles' masses must be above 0. */
   readonly groupOf: Int32Array;
-  /** The groups with members, as of the last gather. */
+  /** The groups with members (disabled ones aside), as of the last gather. */
   readonly ids: number[] = [];
 
   constructor(readonly capacity: number) {
@@ -30,6 +30,7 @@ export class ParticleGroups {
     bodies.forces.fill(0);
     ids.length = 0;
     for (let i = 0; i < n; i++) {
+      if (particles.disabled.has(i)) continue;
       const g = groupOf[i];
       const m = particles.masses[i];
       if (!bodies.masses[g]) ids.push(g);
@@ -50,6 +51,7 @@ export class ParticleGroups {
   scatter(particles: Particles) {
     const { bodies, groupOf } = this;
     for (let i = 0; i < particles.count; i++) {
+      if (particles.disabled.has(i)) continue;
       const g = groupOf[i];
       const share = particles.masses[i] / bodies.masses[g];
       const f = bodies.forces;
